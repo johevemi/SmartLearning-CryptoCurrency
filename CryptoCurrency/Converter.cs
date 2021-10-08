@@ -37,12 +37,20 @@ namespace CryptoCurrency
         /// <param name="fromCurrencyName">Navnet på den valuta, der konverterers fra</param>
         /// <param name="toCurrencyName">Navnet på den valuta, der konverteres til</param>
         /// <param name="amount">Beløbet angivet i valutaen angivet i fromCurrencyName</param>
-        /// <returns>Værdien af beløbet i toCurrencyName</returns>
-        public double Convert(String fromCurrencyName, String toCurrencyName, double amount) 
+        /// <returns>Værdien af beløbet i toCurrencyName</returns>ArgumentException
+        public double Convert(String fromCurrencyName, String toCurrencyName, double amount)
         {
-            var fromCurrencyCryptoCoin = CryptoCoins.Single(x => x.Name == fromCurrencyName);
-            var toCurrencyNameCryptoCoin = CryptoCoins.Single(x => x.Name == toCurrencyName);
-            return amount * fromCurrencyCryptoCoin.Price / toCurrencyNameCryptoCoin.Price;
+            try
+            {
+                var fromCurrencyCryptoCoin = CryptoCoins.Single(x => x.Name == fromCurrencyName);
+                var toCurrencyNameCryptoCoin = CryptoCoins.Single(x => x.Name == toCurrencyName);
+
+                return amount * fromCurrencyCryptoCoin.Price / toCurrencyNameCryptoCoin.Price;
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException();
+            }
         }
     }
     
