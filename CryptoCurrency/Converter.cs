@@ -16,6 +16,10 @@ namespace CryptoCurrency
         /// <param name="price">Prisen på en enhed af valutaen målt i dollars. Prisen kan ikke være negativ</param>
         public void SetPricePerUnit(String currencyName, double price)
         {
+            if (price < 0)
+            {
+                return;
+            }
             var cc = new CryptoCoin
             {
                 Name = currencyName,
@@ -42,10 +46,11 @@ namespace CryptoCurrency
         {
             try
             {
-                var fromCurrencyCryptoCoin = CryptoCoins.Single(x => x.Name == fromCurrencyName);
-                var toCurrencyNameCryptoCoin = CryptoCoins.Single(x => x.Name == toCurrencyName);
-
-                return amount * fromCurrencyCryptoCoin.Price / toCurrencyNameCryptoCoin.Price;
+                var fromCurrencyCryptoCoinPrice = CryptoCoins.Single(x => x.Name == fromCurrencyName).Price;
+                var toCurrencyNameCryptoCoinPrice = CryptoCoins.Single(x => x.Name == toCurrencyName).Price;
+                if (fromCurrencyCryptoCoinPrice == 0 || toCurrencyNameCryptoCoinPrice == 0)
+                    return 0;
+                return amount * fromCurrencyCryptoCoinPrice / toCurrencyNameCryptoCoinPrice;
             }
             catch (Exception)
             {
@@ -53,7 +58,7 @@ namespace CryptoCurrency
             }
         }
     }
-    
+
     public class CryptoCoin
     {
         public string Name { get; set; }

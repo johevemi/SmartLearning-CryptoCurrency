@@ -10,11 +10,13 @@ namespace TestCryptoCurrency
         [InlineData("doge", 2000, 2, "bitcoin", 4000, 1)]
         [InlineData("doge", 2000, -2, "bitcoin", 4000, -1)]
         [InlineData("doge", 2000, 0, "bitcoin", 4000, 0)]
+        [InlineData("doge", 2000, 2, "bitcoin", -4000, 2)]
+        [InlineData("doge", 2000, 2, "bitcoin", 0, 0)]
         public void TestConvert(string fromCurrencyName, double fromCurrencyUnitPrice, double fromCurrencyAmountOfUnits, string toCurrencyName, double toCurrencyUnitPrice, double expected)
         {
             // arrange
             var converter = new Converter();
-            converter.SetPricePerUnit(toCurrencyName, 3000);
+            converter.SetPricePerUnit(toCurrencyName, 2000);
           
             converter.SetPricePerUnit(fromCurrencyName, fromCurrencyUnitPrice);
             converter.SetPricePerUnit(toCurrencyName, toCurrencyUnitPrice);
