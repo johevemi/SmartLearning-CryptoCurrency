@@ -6,24 +6,36 @@ namespace TestCryptoCurrency
 {
     public class UnitTest1
     {
-        [Fact]
-        public void TestConvert()
+        [Theory]
+        [InlineData("doge", 2000, 2, "bitcoin", 4000, 1)]
+        [InlineData("doge", 2000, -2, "bitcoin", 4000, -1)]
+        [InlineData("doge", 2000, 0, "bitcoin", 4000, 0)]
+        public void TestConvert(string fromCurrencyName, double fromCurrencyUnitPrice, double fromCurrencyAmountOfUnits, string toCurrencyName, double toCurrencyUnitPrice, double expected)
         {
             // arrange
             var converter = new Converter();
-            string fromCurrencyName = "doge";
-            string toCurrencyName = "bitcoin";
-            converter.SetPricePerUnit(fromCurrencyName, 2000);
             converter.SetPricePerUnit(toCurrencyName, 3000);
-            converter.SetPricePerUnit(toCurrencyName, 4000);
-            double amount = 2;
+          
+            converter.SetPricePerUnit(fromCurrencyName, fromCurrencyUnitPrice);
+            converter.SetPricePerUnit(toCurrencyName, toCurrencyUnitPrice);
 
             // act
-            double expected = 1;
-            double actual = converter.Convert(fromCurrencyName, toCurrencyName, amount);
-            Console.WriteLine(actual);
+            double actual = converter.Convert(fromCurrencyName, toCurrencyName, fromCurrencyAmountOfUnits);
+
             // assert
-            Assert.Equal(actual, expected);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestConvertException()
+        {
+            // arrange
+            var converter = new Converter();
+
+            // act
+
+            // assert
+            Assert.Throws<ArgumentException>(() => converter.Convert("doge", "bitcoin", 2));
         }
     }
 }
